@@ -1,0 +1,30 @@
+name: appbanquanao
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.18.0
+  carousel_slider: ^5.0.0
+  shared_preferences: ^2.1.0
+  dio: ^5.1.0
+  http: ^0.13.5
+  url_launcher: ^6.1.10
+  provider: ^6.0.5
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/files/
+    - assets/images/
+    - assets/images/products/
+    - assets/files/productlist.json

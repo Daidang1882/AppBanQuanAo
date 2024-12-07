@@ -1,0 +1,133 @@
+{
+    "data":
+    [    
+        {
+            "id": 1,
+            "name": "Áo nam 1",
+            "price": 250000,
+            "img": "aonam1.png",
+            "des": "Áo nam",
+            "catId": 1      
+        },
+        {
+            "id": 2,
+            "name": "Áo nam 2",
+            "price": 210000,
+            "img": "aonam2.png",
+            "des": "Áo nam",
+            "catId": 1 
+        },
+        {
+            "id": 3,
+            "name": "Áo nữ 1",
+            "price": 290000,
+            "img": "aonu1.png",
+            "des": "Áo nữ",
+            "catId": 2  
+        },
+        {
+            "id": 4,
+            "name": "Áo nữ 2",
+            "price": 320000,
+            "img": "aonu2.png",
+            "des": "Áo nữ",
+            "catId": 2  
+        },
+        {
+            "id": 5,
+            "name": "Quần nam 1",
+            "price": 150000,
+            "img": "quannam1.png",
+            "des": "Quần nam",
+            "catId": 3 
+        },
+        {
+            "id": 6,
+            "name": "Quần nam 2",
+            "price": 295000,
+            "img": "quannam2.png",
+            "des": "Quần nam",
+            "catId": 3  
+        },
+        {
+            "id": 7,
+            "name": "Quần nữ 1",
+            "price": 150000,
+            "img": "quannu1.png",
+            "des": "Quần nữ",
+            "catId": 4 
+        },
+        {
+            "id": 8,
+            "name": "Quần nữ 2",
+            "price": 295000,
+            "img": "quannu2.png",
+            "des": "Quần nữ",
+            "catId": 4  
+        },
+        {
+            "id": 9,
+            "name": "váy 1",
+            "price": 405000,
+            "img": "vay1.png",
+            "des": "váy",
+            "catId": 5 
+        },
+        {
+            "id": 10,
+            "name": "váy 2",
+            "price": 358000,
+            "img": "vay2.png",
+            "des": "váy",
+            "catId": 5 
+        },
+        {
+            "id": 11,
+            "name": "Giày nam 1",
+            "price": 405000,
+            "img": "giaynam1.png",
+            "des": "Giày nam",
+            "catId": 6 
+        },
+        {
+            "id": 12,
+            "name": "Giày nam 2",
+            "price": 400000,
+            "img": "giaynam2.png",
+            "des": "Giày nam",
+            "catId": 6 
+        },
+        {
+            "id": 13,
+            "name": "Giày nữ 1",
+            "price": 405000,
+            "img": "giaynu1.png",
+            "des": "Giày nữ",
+            "catId": 7 
+        },
+        {
+            "id": 14,
+            "name": "Giày nữ 2",
+            "price": 358000,
+            "img": "giaynu2.png",
+            "des": "Giày nữ",
+            "catId": 7 
+        },
+        {
+            "id": 15,
+            "name": "Túi xách 1",
+            "price": 405000,
+            "img": "tuixach1.png",
+            "des": "Túi xách",
+            "catId": 8 
+        },
+        {
+            "id": 16,
+            "name": "Túi xách 2",
+            "price": 680000,
+            "img": "tuixach2.png",
+            "des": "Túi xách",
+            "catId": 8 
+        }
+    ]
+}

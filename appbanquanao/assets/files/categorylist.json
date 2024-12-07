@@ -1,0 +1,45 @@
+{
+    "data":
+    [
+        {
+            "id": 1,
+            "name": "Áo nam",
+            "img": "aonam.png"
+        },
+        {
+            "id": 2,
+            "name": "Áo nữ",
+            "img": "aonu.png"
+        },
+        {
+            "id": 3,
+            "name": "Quần nam",
+            "img": "quannam.png"
+        },
+        {
+            "id": 4,
+            "name": "Quần nữ",
+            "img": "quannu.png"
+        },
+        {
+            "id": 5,
+            "name": "váy/đầm",
+            "img": "vay.png"
+        },
+        {
+            "id": 6,
+            "name": "Giày nam",
+            "img": "giaynam.png"
+        },
+        {
+            "id": 7,
+            "name": "Giày nữ",
+            "img": "giaynu.png"
+        },
+        {
+            "id": 8,
+            "name": "Túi xách",
+            "img": "tuixach.png"
+        }
+    ]
+}
