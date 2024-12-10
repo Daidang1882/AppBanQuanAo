@@ -177,29 +177,59 @@ class _CombinedScreenState extends State<MyCarousel> {
               },
             ),
           ),
-
-          // Nút thêm sản phẩm
+          // Row chứa nút Thêm và Trừ
           Positioned(
             bottom: 2,
             left: 8,
             right: 8,
             child: Consumer<ProductsVM>(
-              builder: (context, value, child) => ElevatedButton.icon(
-                icon: const Icon(
-                  Icons.add,
-                  color: Colors.orange,
-                  size: 10,
-                ),
-                label: const Text('Add'),
-                onPressed: () {
-                  value.add(productModel); // Thêm sản phẩm vào danh sách
-                  showSnackBar("Thêm vào giỏ hàng thành công", context);
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+              builder: (context, value, child) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Nút Trừ sản phẩm
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.add,
+                        color: Colors.red,
+                        size: 18,
+                      ),
+                      label: const Text(''),
+                      onPressed: () {
+                        value.add(productModel); // Logic trừ sản phẩm
+                        showSnackBar("Đã trừ sản phẩm khỏi giỏ hàng", context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        backgroundColor: Colors.white, // Màu nền
+                        foregroundColor: Colors.red, // Màu chữ
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 8), // Khoảng cách giữa nút
+                  // Nút Thêm sản phẩm
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.remove,
+                        color: Colors.orange,
+                        size: 18,
+                      ),
+                      label: const Text(''),
+                      onPressed: () {
+                        value.del(0); // Logic thêm sản phẩm
+                        showSnackBar("Thêm vào giỏ hàng thành công", context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -14,13 +14,19 @@ class ProductCart extends StatefulWidget {
 }
 
 class _ProductCartState extends State<ProductCart> {
-  var lstProStr = "";
-  List<Product> itemList = [];
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+  }
+
+  // Tính tổng giá trị giỏ hàng
+  double getTotalPrice(List<Product> products) {
+    double total = 0;
+    for (var product in products) {
+      total += (product.price ?? 0) *
+          (product.quantity ?? 0); // Default to 0 if null
+    }
+    return total;
   }
 
   @override
@@ -28,51 +34,115 @@ class _ProductCartState extends State<ProductCart> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Danh sách hàng hóa đã chọn",
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.amber,
-            )),
+        const Text(
+          "Danh sách hàng hóa đã chọn",
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.amber,
+          ),
+        ),
+        // Hiển thị số lượng giỏ hàng ở góc trái
+        Consumer<ProductsVM>(
+          builder: (context, value, child) {
+            int totalItems =
+                value.lst.fold(0, (sum, item) => sum + (item.quantity ?? 0));
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Số sản phẩm trong giỏ hàng: $totalItems",
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+              ),
+            );
+          },
+        ),
         Expanded(
           child: Consumer<ProductsVM>(
-            builder: (context, value, child) => Scaffold(
-              body: SafeArea(
-                child: Scaffold(
-                    body: ListView.builder(
-                  itemCount: value.lst.length,
-                  itemBuilder: (context, index) {
-                    return itemListView(value.lst[index]);
+            builder: (context, value, child) {
+              return ListView.builder(
+                itemCount: value.lst.length,
+                itemBuilder: (context, index) {
+                  return itemListView(value.lst[index], index);
+                },
+              );
+            },
+          ),
+        ),
+        // Hiển thị tổng tiền và nút thanh toán
+        Consumer<ProductsVM>(
+          builder: (context, value, child) {
+            double totalPrice = getTotalPrice(value.lst); // Tổng tiền
+            return Column(
+              children: [
+                Text(
+                  "Tổng tiền: ${NumberFormat('###,###.###').format(totalPrice)} VND",
+                  style: const TextStyle(fontSize: 20, color: Colors.red),
+                ),
+                ElevatedButton.icon(
+                  icon: const Icon(
+                    Icons.payment,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                  label: const Text('Thanh toán'),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Thông báo"),
+                          content: const Text("Thanh toán thành công!"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                value
+                                    .clear(); // Xóa giỏ hàng sau khi thanh toán thành công
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
-                )),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        // Nút xóa tất cả sản phẩm
+        Consumer<ProductsVM>(
+          builder: (context, value, child) => ElevatedButton.icon(
+            icon: const Icon(
+              Icons.remove_shopping_cart,
+              color: Colors.orange,
+              size: 24,
+            ),
+            label: const Text('Delete All'),
+            onPressed: () {
+              value.clear(); // Xóa tất cả sản phẩm
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
               ),
             ),
           ),
         ),
-        Consumer<ProductsVM>(
-          builder: (context, value, child) => ElevatedButton.icon(
-              icon: Icon(
-                Icons.remove_shopping_cart,
-                color: Colors.orange,
-                size: 24,
-              ),
-              label: Text('Delete All'),
-              onPressed: () {
-                value.clear();
-              },
-              style: ElevatedButton.styleFrom(
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0),
-                ),
-              )),
-        )
       ],
     );
   }
 
-  Widget itemListView(Product productModel) {
+  // Hàm hiển thị sản phẩm
+  Widget itemListView(Product productModel, int index) {
     return Container(
-      padding: EdgeInsets.all(15),
-      margin: EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(color: Colors.grey.shade200),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -81,40 +151,39 @@ class _ProductCartState extends State<ProductCart> {
             url_product_img + productModel.img!,
             height: 80,
             width: 80,
-            errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
+            errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.image),
           ),
-          SizedBox(
-            width: 30,
-          ),
+          const SizedBox(width: 30),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 productModel.name ?? '',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
                 NumberFormat('###,###.###').format(productModel.price),
-                style: TextStyle(fontSize: 15, color: Colors.red),
+                style: const TextStyle(fontSize: 15, color: Colors.red),
               ),
               Text(
                 productModel.des!,
-                style: TextStyle(fontSize: 13, color: Colors.grey),
+                style: const TextStyle(fontSize: 13, color: Colors.grey),
               ),
               Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Căn giữa hai nút trong hàng.
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Consumer<ProductsVM>(
                     builder: (context, value, child) => ElevatedButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add,
                         color: Colors.orange,
                         size: 10,
                       ),
-                      label: Text('Add'),
+                      label: const Text('Add'),
                       onPressed: () {
-                        value.add(productModel); // Thêm sản phẩm vào danh sách.
+                        value.add(productModel); // Thêm sản phẩm vào danh sách
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -123,17 +192,17 @@ class _ProductCartState extends State<ProductCart> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 16), // Khoảng cách giữa hai nút.
+                  const SizedBox(width: 16), // Khoảng cách giữa hai nút
                   Consumer<ProductsVM>(
                     builder: (context, value, child) => ElevatedButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.remove,
                         color: Colors.orange,
                         size: 10,
                       ),
-                      label: Text('Delete'),
+                      label: const Text('Delete'),
                       onPressed: () {
-                        value.del(0); // Xóa sản phẩm tại vị trí 0.
+                        value.del(index); // Xóa sản phẩm tại vị trí index
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -144,8 +213,13 @@ class _ProductCartState extends State<ProductCart> {
                   ),
                 ],
               ),
+              // Hiển thị số lượng sản phẩm trong giỏ hàng
+              Text(
+                "Số lượng: ${productModel.quantity}",
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

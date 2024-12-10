@@ -1,7 +1,6 @@
 import 'package:appbanquanao/data/model/cartcounter.dart';
 import 'package:appbanquanao/data/model/product_viewmodel.dart';
 import 'package:appbanquanao/page/category/categorywidget.dart';
-
 import 'package:flutter/material.dart';
 import 'page/defaulwidget.dart';
 import '../../page/carousel.dart';
@@ -18,31 +17,20 @@ class Mainpage extends StatefulWidget {
 
 class _MainpageState extends State<Mainpage> {
   int _selectedIndex = 0;
+
+  // Danh sách các widget cần hiển thị cho các tab
+  final List<Widget> _widgetOptions = [
+    MyCarousel(), // Trang chủ
+    CategoryWidget(), // Danh mục
+    ProductCart(), // Giỏ hàng
+    DefaulWidget(title: "Tài khoản"), // Tài khoản
+  ];
+
+  // Hàm chuyển tab
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Cập nhật tab đã chọn
     });
-  }
-
-  _loadWidget(int index) {
-    var nameWidgets = "Trang chủ";
-    switch (index) {
-      case 0:
-        return MyCarousel();
-      case 1:
-        return CategoryWidget();
-
-      case 2:
-        return ProductCart();
-        break;
-      case 3:
-        nameWidgets = "Tài khoản";
-        break;
-      default:
-        nameWidgets = "None";
-        break;
-    }
-    return DefaulWidget(title: nameWidgets);
   }
 
   @override
@@ -60,7 +48,7 @@ class _MainpageState extends State<Mainpage> {
         actions: [
           InkWell(
             onTap: () {
-              // chuyển về tab 2 - Product
+              // Chuyển về tab 2 - Product Cart
               _onItemTapped(2);
             },
             child: Padding(
@@ -77,9 +65,13 @@ class _MainpageState extends State<Mainpage> {
                     left: 0,
                     right: 0,
                     child: Consumer<ProductsVM>(
-                      builder: (context, value, child) => CartCounter(
-                        count: value.lst.length.toString(),
-                      ),
+                      builder: (context, value, child) {
+                        // Tính tổng số lượng sản phẩm trong giỏ hàng
+                        int totalCount = value.lst
+                            .fold(0, (sum, item) => sum + (item.quantity ?? 0));
+
+                        return CartCounter(count: totalCount.toString());
+                      },
                     ),
                   ),
                 ],
@@ -88,60 +80,6 @@ class _MainpageState extends State<Mainpage> {
           ),
         ],
       ),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     children: [
-      //       ListTile(
-      //         leading: const Icon(Icons.home),
-      //         title: const Text('Trang chủ'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           _selectedIndex = 0;
-      //           setState(() {});
-      //         },
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.list_alt),
-      //         title: const Text('Danh mục'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           _selectedIndex = 1;
-      //           setState(() {});
-      //         },
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.shopping_cart),
-      //         title: const Text('Giỏ hàng'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           _selectedIndex = 2;
-      //           setState(() {});
-      //         },
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.person),
-      //         title: const Text('Tài khoản'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           _selectedIndex = 3;
-      //           setState(() {});
-      //         },
-      //       ),
-      //       const Divider(
-      //         color: Colors.black,
-      //       ),
-      //       ListTile(
-      //         leading: const Icon(Icons.exit_to_app),
-      //         title: const Text('Logout'),
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           _selectedIndex = 0;
-      //           setState(() {});
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -166,7 +104,7 @@ class _MainpageState extends State<Mainpage> {
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
-      body: _loadWidget(_selectedIndex),
+      body: _widgetOptions[_selectedIndex], // Chuyển đến widget tương ứng
     );
   }
 }
